@@ -491,6 +491,13 @@
     function startTimePlay() {
         var slider = document.getElementById('time-slider');
 
+        // Ensure new lamps layer is visible for the animation
+        if (!layerState.new) {
+            layerState.new = true;
+            document.getElementById('layer-new').checked = true;
+            updateLayerVisibility();
+        }
+
         // If at end, start from beginning
         if (parseInt(slider.value, 10) >= timeState.dates.length - 1) {
             slider.value = 0;
