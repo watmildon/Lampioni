@@ -34,7 +34,9 @@ var I18n = (function() {
             lamps: "lamps",
             resetToToday: "Reset to today",
             monthsShort: "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
-            monthsLong: "January,February,March,April,May,June,July,August,September,October,November,December"
+            monthsLong: "January,February,March,April,May,June,July,August,September,October,November,December",
+            showLeaderboard: "Show Top Contributors",
+            hideLeaderboard: "Hide"
         },
         it: {
             title: "Lampioni",
@@ -66,7 +68,9 @@ var I18n = (function() {
             lamps: "lampioni",
             resetToToday: "Torna ad oggi",
             monthsShort: "Gen,Feb,Mar,Apr,Mag,Giu,Lug,Ago,Set,Ott,Nov,Dic",
-            monthsLong: "Gennaio,Febbraio,Marzo,Aprile,Maggio,Giugno,Luglio,Agosto,Settembre,Ottobre,Novembre,Dicembre"
+            monthsLong: "Gennaio,Febbraio,Marzo,Aprile,Maggio,Giugno,Luglio,Agosto,Settembre,Ottobre,Novembre,Dicembre",
+            showLeaderboard: "Mostra classifica",
+            hideLeaderboard: "Nascondi"
         }
     };
 

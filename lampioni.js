@@ -571,11 +571,23 @@
         return month + ' ' + parseInt(parts[2], 10) + ', ' + parts[0];
     }
 
+    function updateLeaderboardToggleText() {
+        var btn = document.getElementById('leaderboard-toggle');
+        var isExpanded = document.getElementById('leaderboard-section').classList.contains('expanded');
+        btn.textContent = isExpanded ? I18n.t('hideLeaderboard') : I18n.t('showLeaderboard');
+    }
+
     // ========================================
     // Interactions
     // ========================================
 
     function setupInteractions() {
+        // Sync layerState with actual checkbox values on load
+        layerState.baseline = document.getElementById('layer-baseline').checked;
+        layerState.new = document.getElementById('layer-new').checked;
+        layerState.heatmap = document.getElementById('layer-heatmap').checked;
+        updateLayerVisibility();
+
         // Layer toggles
         document.getElementById('layer-baseline').addEventListener('change', function() {
             layerState.baseline = this.checked;
@@ -596,6 +608,15 @@
         document.getElementById('lang-toggle').addEventListener('click', function() {
             I18n.toggle();
             updateStatsUI();
+            updateLeaderboardToggleText();
+        });
+
+        // Leaderboard toggle (mobile)
+        document.getElementById('leaderboard-toggle').addEventListener('click', function() {
+            var section = document.getElementById('leaderboard-section');
+            var isExpanded = section.classList.toggle('expanded');
+            this.classList.toggle('expanded', isExpanded);
+            updateLeaderboardToggleText();
         });
 
         // Map click for popups
