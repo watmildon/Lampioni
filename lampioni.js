@@ -241,13 +241,13 @@
                     12, 10,
                     18, 20
                 ],
-                'circle-color': '#00ff88',
+                'circle-color': '#00aaff',
                 'circle-opacity': 0.4,
                 'circle-blur': 1
             }
         });
 
-        // New lamps layer - bright green
+        // New lamps layer - cyan (colorblind-friendly)
         map.addLayer({
             id: 'new-lamps',
             type: 'circle',
@@ -259,7 +259,7 @@
                     12, 5,
                     18, 10
                 ],
-                'circle-color': '#00ff88',
+                'circle-color': '#00aaff',
                 'circle-opacity': 1,
                 'circle-blur': 0.2
             }
