@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Daily processing script for Lampioni.
-Uses Overpass API to fetch new street lamps with user metadata.
+Uses multiple Overpass API endpoints with fallback to Postpass.
 
 Usage:
     python process_daily.py [--data-dir DATA_DIR]
@@ -16,8 +16,16 @@ from pathlib import Path
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
-# Overpass API endpoint
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+# Overpass API endpoints (in order of preference)
+OVERPASS_ENDPOINTS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.osm.jp/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",  # Often lags behind
+]
+
+# Postpass API (fallback - no metadata)
+POSTPASS_URL = "https://postpass.geofabrik.de/api/0.2/interpreter"
 
 # Tags to preserve for street lamps
 STREETLAMP_TAGS = [
@@ -32,46 +40,108 @@ BASELINE_DATE = "2026-02-01T00:00:00Z"
 # Italy bounding box (approximate)
 ITALY_BBOX = "35.5,6.5,47.5,19.0"  # south,west,north,east
 
+# Maximum acceptable data lag (hours)
+MAX_DATA_LAG_HOURS = 24
 
-def overpass_query(query, retries=3):
-    """Execute an Overpass query with retries."""
+
+def check_overpass_timestamp(result, endpoint):
+    """
+    Check the timestamp_osm_base from Overpass response.
+    Returns (is_fresh, lag_hours, timestamp_str).
+    """
+    timestamp_str = result.get('osm3s', {}).get('timestamp_osm_base', '')
+    if not timestamp_str:
+        return True, 0, "unknown"  # Can't check, assume OK
+
+    try:
+        # Parse ISO timestamp like "2026-02-03T12:00:00Z"
+        data_time = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+        now = datetime.now(timezone.utc)
+        lag = now - data_time
+        lag_hours = lag.total_seconds() / 3600
+
+        is_fresh = lag_hours <= MAX_DATA_LAG_HOURS
+        return is_fresh, lag_hours, timestamp_str
+    except Exception:
+        return True, 0, timestamp_str  # Can't parse, assume OK
+
+
+def overpass_query(query, timeout_sec=300, min_freshness_hours=None):
+    """
+    Execute an Overpass query, trying multiple endpoints.
+    If min_freshness_hours is set, skip endpoints with stale data.
+    """
     data = query.encode('utf-8')
+    last_error = None
+    freshness_threshold = min_freshness_hours or MAX_DATA_LAG_HOURS
 
-    for attempt in range(retries):
+    for endpoint in OVERPASS_ENDPOINTS:
         try:
-            req = Request(OVERPASS_URL, data=data, headers={
-                'Content-Type': 'application/x-www-form-urlencoded'
+            req = Request(endpoint, data=data, headers={
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'User-Agent': 'Lampioni/1.0 (https://github.com/your-repo/lampioni)'
             })
-            print(f"  Querying Overpass API (attempt {attempt + 1})...")
+            print(f"  Trying {endpoint.split('/')[2]}...")
 
-            with urlopen(req, timeout=300) as response:
+            with urlopen(req, timeout=timeout_sec) as response:
                 result = response.read().decode('utf-8')
-                return json.loads(result)
+                parsed = json.loads(result)
+
+                # Check data freshness
+                is_fresh, lag_hours, ts = check_overpass_timestamp(parsed, endpoint)
+                if lag_hours > 0:
+                    print(f"    Data timestamp: {ts} ({lag_hours:.1f}h ago)")
+
+                if not is_fresh:
+                    print(f"    WARNING: Data is {lag_hours:.1f}h old (threshold: {freshness_threshold}h), trying next endpoint...")
+                    last_error = Exception(f"Data too stale: {lag_hours:.1f}h old")
+                    continue
+
+                return parsed
 
         except HTTPError as e:
-            if e.code == 429:  # Too many requests
-                wait = 60 * (attempt + 1)
-                print(f"  Rate limited, waiting {wait}s...")
-                time.sleep(wait)
-            elif e.code == 504:  # Gateway timeout
-                wait = 30 * (attempt + 1)
-                print(f"  Timeout, waiting {wait}s...")
-                time.sleep(wait)
-            else:
-                raise
+            print(f"    HTTP {e.code}: {e.reason}")
+            last_error = e
+            if e.code == 429:  # Rate limited - wait before trying next
+                time.sleep(5)
+            continue
+
         except URLError as e:
-            if attempt < retries - 1:
-                print(f"  Error: {e}, retrying...")
-                time.sleep(10)
-            else:
-                raise
+            print(f"    Error: {e.reason}")
+            last_error = e
+            continue
 
-    raise Exception("Overpass query failed after retries")
+        except Exception as e:
+            print(f"    Error: {e}")
+            last_error = e
+            continue
+
+    raise Exception(f"All Overpass endpoints failed. Last error: {last_error}")
 
 
-def fetch_new_streetlamps(since_date):
+def postpass_query(sql):
+    """Execute a Postpass SQL query (fallback, no metadata)."""
+    from urllib.parse import urlencode
+
+    data = urlencode({'data': sql}).encode('utf-8')
+
+    try:
+        req = Request(POSTPASS_URL, data=data, headers={
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': 'Lampioni/1.0'
+        })
+        print(f"  Using Postpass fallback...")
+
+        with urlopen(req, timeout=300) as response:
+            result = response.read().decode('utf-8')
+            return json.loads(result)
+
+    except Exception as e:
+        raise Exception(f"Postpass query failed: {e}")
+
+
+def fetch_new_streetlamps_overpass(since_date):
     """Fetch street lamps created since the given date using Overpass."""
-    # Query for street lamps with metadata, created after baseline
     query = f"""
 [out:json][timeout:180][bbox:{ITALY_BBOX}];
 node["highway"="street_lamp"](newer:"{since_date}");
@@ -114,8 +184,73 @@ out meta;
     return lamps
 
 
-def fetch_all_streetlamps():
-    """Fetch ALL current street lamps (IDs only) to detect deletions."""
+def fetch_streetlamps_postpass():
+    """Fetch ALL street lamps from Postpass (fallback - no user metadata)."""
+    # Italy bbox: minlon, minlat, maxlon, maxlat
+    sql = """
+SELECT osm_id, tags, geom
+FROM postpass_point
+WHERE tags->>'highway' = 'street_lamp'
+AND geom && st_makeenvelope(6.5, 35.5, 19.0, 47.5, 4326)
+"""
+
+    print("Fetching street lamps from Postpass...")
+    result = postpass_query(sql)
+
+    lamps = {}
+    for feature in result.get('features', []):
+        props = feature.get('properties', {})
+        osm_id = props.get('osm_id')
+        if not osm_id:
+            continue
+
+        tags = props.get('tags', {})
+        coords = feature.get('geometry', {}).get('coordinates', [])
+
+        lamp_props = {
+            "osm_type": "node",
+            "osm_id": osm_id,
+            "user": "unknown",  # Postpass doesn't have user metadata
+            "timestamp": ""
+        }
+
+        # Copy relevant tags
+        for tag in STREETLAMP_TAGS:
+            if tag in tags:
+                lamp_props[tag] = tags[tag]
+
+        lamps[osm_id] = {
+            "type": "Feature",
+            "id": f"node/{osm_id}",
+            "geometry": {
+                "type": "Point",
+                "coordinates": coords
+            },
+            "properties": lamp_props
+        }
+
+    return lamps
+
+
+def fetch_new_streetlamps(since_date, use_postpass_fallback=True):
+    """
+    Fetch new street lamps, trying Overpass first, Postpass as fallback.
+    Returns (lamps_dict, has_metadata).
+    """
+    try:
+        lamps = fetch_new_streetlamps_overpass(since_date)
+        return lamps, True
+    except Exception as e:
+        print(f"  Overpass failed: {e}")
+        if use_postpass_fallback:
+            print("  Falling back to Postpass (no user metadata)...")
+            lamps = fetch_streetlamps_postpass()
+            return lamps, False
+        raise
+
+
+def fetch_all_streetlamp_ids():
+    """Fetch ALL current street lamp IDs to detect deletions."""
     query = f"""
 [out:json][timeout:180][bbox:{ITALY_BBOX}];
 node["highway"="street_lamp"];
@@ -147,6 +282,8 @@ def main():
                         help="Data directory (default: data)")
     parser.add_argument("--full-refresh", action="store_true",
                         help="Re-fetch all new lamps since baseline, not just recent")
+    parser.add_argument("--no-postpass-fallback", action="store_true",
+                        help="Disable Postpass fallback (fail if all Overpass endpoints fail)")
     args = parser.parse_args()
 
     data_dir = Path(args.data_dir)
@@ -185,10 +322,13 @@ def main():
     print(f"Existing new lamps: {len(existing_by_id):,}")
     print()
 
-    # Fetch new street lamps from Overpass
-    # Use baseline date to get all lamps created since Feb 1
-    new_lamps_data = fetch_new_streetlamps(BASELINE_DATE)
+    # Fetch new street lamps
+    use_fallback = not args.no_postpass_fallback
+    new_lamps_data, has_metadata = fetch_new_streetlamps(BASELINE_DATE, use_fallback)
     print(f"  Found {len(new_lamps_data):,} lamps created since {BASELINE_DATE}")
+
+    if not has_metadata:
+        print("  WARNING: Using Postpass data - leaderboard will show 'unknown' users")
 
     # Filter out baseline lamps (they existed before Feb 1)
     truly_new = {k: v for k, v in new_lamps_data.items() if k not in baseline_ids}
@@ -201,9 +341,12 @@ def main():
     for osm_id, feature in truly_new.items():
         # Check if we already knew about this lamp
         if osm_id in existing_by_id:
-            # Preserve the original date_added
+            # Preserve the original date_added and user from previous data
             existing = existing_by_id[osm_id]
             feature["properties"]["date_added"] = existing["properties"].get("date_added", today)
+            # Preserve user if current fetch has no metadata
+            if not has_metadata and existing["properties"].get("user", "unknown") != "unknown":
+                feature["properties"]["user"] = existing["properties"]["user"]
         else:
             # First time seeing this lamp
             # Try to extract date from timestamp, otherwise use today
@@ -222,6 +365,7 @@ def main():
     # Update stats
     stats["new_count"] = len(new_features)
     stats["last_updated"] = datetime.now(timezone.utc).isoformat()
+    stats["data_source"] = "overpass" if has_metadata else "postpass"
 
     # Calculate leaderboard
     user_counts = {}
@@ -265,6 +409,7 @@ def main():
 
     print("\n" + "="*50)
     print("Daily update complete!")
+    print(f"  Data source:     {'Overpass (with metadata)' if has_metadata else 'Postpass (no metadata)'}")
     print(f"  Baseline:        {stats['baseline_count']:,}")
     print(f"  New since Feb 1: {stats['new_count']:,}")
     print(f"  Discovered today: {new_today_count:,}")
