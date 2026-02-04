@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "WebFetch(domain:download.geofabrik.de)",
-      "Bash(python3 -c:*)"
-    ]
-  }
-}

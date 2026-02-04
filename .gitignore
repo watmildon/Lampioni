@@ -23,3 +23,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+# AI/Code agents
+.claude/
+.cursor/
+.aider*
+.copilot/
+CLAUDE.md
