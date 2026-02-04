@@ -222,6 +222,13 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+#leaderboard li .user:hover {
+    color: #00aaff;
 }
 
 #leaderboard li .count {

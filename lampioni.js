@@ -307,9 +307,10 @@
         if (stats.leaderboard) {
             stats.leaderboard.slice(0, 10).forEach(function(entry, i) {
                 var li = document.createElement('li');
+                var userUrl = 'https://www.openstreetmap.org/user/' + encodeURIComponent(entry.user);
                 li.innerHTML =
                     '<span class="rank">' + (i + 1) + '.</span>' +
-                    '<span class="user">' + escapeHtml(entry.user) + '</span>' +
+                    '<a class="user" href="' + userUrl + '" target="_blank">' + escapeHtml(entry.user) + '</a>' +
                     '<span class="count">' + entry.count + '</span>';
                 leaderboard.appendChild(li);
             });
