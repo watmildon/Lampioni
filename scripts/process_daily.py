@@ -37,8 +37,8 @@ STREETLAMP_TAGS = [
 # Baseline date - lamps created after this are "new"
 BASELINE_DATE = "2026-02-01T00:00:00Z"
 
-# Italy bounding box (approximate)
-ITALY_BBOX = "35.5,6.5,47.5,19.0"  # south,west,north,east
+# Italy relation ID in OSM
+ITALY_RELATION_ID = 365331
 
 # Maximum acceptable data lag (hours)
 MAX_DATA_LAG_HOURS = 24
@@ -143,8 +143,10 @@ def postpass_query(sql):
 def fetch_new_streetlamps_overpass(since_date):
     """Fetch street lamps created since the given date using Overpass."""
     query = f"""
-[out:json][timeout:180][bbox:{ITALY_BBOX}];
-node["highway"="street_lamp"](newer:"{since_date}");
+[out:json][timeout:180];
+rel({ITALY_RELATION_ID});
+map_to_area->.italy;
+node["highway"="street_lamp"](area.italy)(newer:"{since_date}");
 out meta;
 """
 
@@ -252,8 +254,10 @@ def fetch_new_streetlamps(since_date, use_postpass_fallback=True):
 def fetch_all_streetlamp_ids():
     """Fetch ALL current street lamp IDs to detect deletions."""
     query = f"""
-[out:json][timeout:180][bbox:{ITALY_BBOX}];
-node["highway"="street_lamp"];
+[out:json][timeout:180];
+rel({ITALY_RELATION_ID});
+map_to_area->.italy;
+node["highway"="street_lamp"](area.italy);
 out ids;
 """
 
