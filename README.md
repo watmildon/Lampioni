@@ -1,4 +1,5 @@
-<img width="2619" height="1744" alt="image" src="https://github.com/user-attachments/assets/9f9c2c9c-32a3-46da-a5ac-a9c7c622c8d1" />
+<img width="1585" height="1218" alt="image" src="https://github.com/user-attachments/assets/d24f4845-533b-4315-9efc-79472adafbdf" />
+
 
 # Lampioni
 
