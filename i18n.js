@@ -60,7 +60,15 @@ var I18n = (function() {
         }
     };
 
-    var currentLang = localStorage.getItem('lampioni-lang') || 'en';
+    function detectLanguage() {
+        var stored = localStorage.getItem('lampioni-lang');
+        if (stored) return stored;
+
+        var browserLang = navigator.language || navigator.userLanguage || 'en';
+        return browserLang.toLowerCase().startsWith('it') ? 'it' : 'en';
+    }
+
+    var currentLang = detectLanguage();
 
     function t(key) {
         return strings[currentLang][key] || strings.en[key] || key;

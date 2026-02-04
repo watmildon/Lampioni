@@ -113,6 +113,9 @@
 
         // Update URL hash on move
         map.on('moveend', updateUrlHash);
+
+        // Respond to manual URL hash changes
+        window.addEventListener('hashchange', parseUrlHash);
     }
 
     // ========================================
