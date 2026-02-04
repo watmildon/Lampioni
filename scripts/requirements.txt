@@ -1,0 +1,4 @@
+# For process_baseline.py (one-time, requires osmium-tool installed)
+osmium>=3.7.0
+
+# process_daily.py uses only stdlib (urllib), no external deps needed

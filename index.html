@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lampioni - Italian Street Lights Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.0.0/dist/maplibre-gl.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    <div id="map"></div>
+
+    <!-- Header -->
+    <div id="header">
+        <h1 id="title">Lampioni</h1>
+        <div id="header-links">
+            <button id="lang-toggle" title="Switch language">IT</button>
+            <a href="https://community.openstreetmap.org/t/progetto-del-mese-febbraio-2026-lampioni/141180"
+               target="_blank" title="OSM Italy Project">OSM Italy</a>
+            <a href="https://github.com/your-repo/lampioni" target="_blank" title="GitHub">GitHub</a>
+        </div>
+    </div>
+
+    <!-- Layer Controls -->
+    <div id="layer-panel" class="panel">
+        <h3 data-i18n="layers">Layers</h3>
+        <label>
+            <input type="checkbox" id="layer-baseline" checked>
+            <span class="color-dot baseline"></span>
+            <span data-i18n="baseline">Baseline (Feb 1)</span>
+        </label>
+        <label>
+            <input type="checkbox" id="layer-new" checked>
+            <span class="color-dot new"></span>
+            <span data-i18n="newLamps">New lamps</span>
+        </label>
+        <label>
+            <input type="checkbox" id="layer-heatmap">
+            <span class="color-dot heatmap"></span>
+            <span data-i18n="heatmap">Heatmap</span>
+        </label>
+    </div>
+
+    <!-- Stats Panel -->
+    <div id="stats-panel" class="panel">
+        <h3 data-i18n="statistics">Statistics</h3>
+        <div class="stat-row">
+            <span data-i18n="total">Total</span>
+            <span id="stat-total">-</span>
+        </div>
+        <div class="stat-row">
+            <span data-i18n="baseline">Baseline</span>
+            <span id="stat-baseline">-</span>
+        </div>
+        <div class="stat-row">
+            <span data-i18n="newSinceFeb1">New since Feb 1</span>
+            <span id="stat-new">-</span>
+        </div>
+        <div class="stat-row updated">
+            <span data-i18n="lastUpdated">Last updated</span>
+            <span id="stat-updated">-</span>
+        </div>
+
+        <h4 data-i18n="topContributors">Top Contributors</h4>
+        <ol id="leaderboard"></ol>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading">
+        <div class="spinner"></div>
+        <span data-i18n="loading">Loading data...</span>
+    </div>
+
+    <script src="https://unpkg.com/maplibre-gl@5.0.0/dist/maplibre-gl.js"></script>
+    <script src="i18n.js"></script>
+    <script src="lampioni.js"></script>
+</body>
+</html>
