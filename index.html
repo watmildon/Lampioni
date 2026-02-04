@@ -51,6 +51,34 @@
         </label>
     </div>
 
+    <!-- Time Slider -->
+    <div id="time-panel" class="panel">
+        <h3 data-i18n="timeSlider">Time Travel</h3>
+        <div id="time-slider-container">
+            <input type="range" id="time-slider" min="0" max="100" value="100">
+            <div id="time-labels">
+                <span id="time-min">Feb 1</span>
+                <span id="time-max">Today</span>
+            </div>
+        </div>
+        <div id="time-display">
+            <span id="time-current-date">-</span>
+            <span id="time-lamp-count">-</span>
+        </div>
+        <div id="time-controls">
+            <button id="time-play" title="Play animation">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            <button id="time-reset" title="Reset to today" data-i18n-title="resetToToday">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <!-- Stats Panel -->
     <div id="stats-panel" class="panel">
         <h3 data-i18n="statistics">Statistics</h3>

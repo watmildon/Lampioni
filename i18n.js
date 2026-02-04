@@ -29,7 +29,12 @@ var I18n = (function() {
             height: "Height",
             hoursAgo: "h ago",
             daysAgo: "d ago",
-            justNow: "just now"
+            justNow: "just now",
+            timeSlider: "Time Travel",
+            lamps: "lamps",
+            resetToToday: "Reset to today",
+            monthsShort: "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+            monthsLong: "January,February,March,April,May,June,July,August,September,October,November,December"
         },
         it: {
             title: "Lampioni",
@@ -56,7 +61,12 @@ var I18n = (function() {
             height: "Altezza",
             hoursAgo: "h fa",
             daysAgo: "g fa",
-            justNow: "adesso"
+            justNow: "adesso",
+            timeSlider: "Viaggio nel tempo",
+            lamps: "lampioni",
+            resetToToday: "Torna ad oggi",
+            monthsShort: "Gen,Feb,Mar,Apr,Mag,Giu,Lug,Ago,Set,Ott,Nov,Dic",
+            monthsLong: "Gennaio,Febbraio,Marzo,Aprile,Maggio,Giugno,Luglio,Agosto,Settembre,Ottobre,Novembre,Dicembre"
         }
     };
 

@@ -29,6 +29,23 @@
         heatmap: false
     };
 
+    // Time slider state
+    var timeState = {
+        baselineDate: '2026-02-01',
+        minDate: null,
+        maxDate: null,
+        currentDate: null,
+        dates: [],
+        isPlaying: false,
+        playInterval: null
+    };
+
+    // Cached data for filtering
+    var cachedData = {
+        baseline: null,
+        newLamps: null
+    };
+
     // ========================================
     // Starfield
     // ========================================
@@ -265,6 +282,10 @@
             var baseline = results[1];
             var newLamps = results[2];
 
+            // Cache data for time filtering
+            cachedData.baseline = baseline;
+            cachedData.newLamps = newLamps;
+
             // Update map sources
             map.getSource('baseline').setData(baseline);
             map.getSource('new-lamps').setData(newLamps);
@@ -275,6 +296,9 @@
                 features: baseline.features.concat(newLamps.features)
             };
             map.getSource('all-lamps').setData(allLamps);
+
+            // Initialize time slider
+            initTimeSlider();
 
             // Update stats UI
             updateStatsUI();
@@ -315,6 +339,236 @@
                 leaderboard.appendChild(li);
             });
         }
+    }
+
+    // ========================================
+    // Time Slider
+    // ========================================
+
+    function initTimeSlider() {
+        // Build list of unique dates from new lamps and stats
+        var dateSet = {};
+        dateSet[timeState.baselineDate] = true;
+
+        // Add dates from new lamps features
+        if (cachedData.newLamps && cachedData.newLamps.features) {
+            cachedData.newLamps.features.forEach(function(f) {
+                var d = f.properties.date_added;
+                if (d) dateSet[d] = true;
+            });
+        }
+
+        // Also include dates from stats.daily_additions for completeness
+        if (stats && stats.daily_additions) {
+            Object.keys(stats.daily_additions).forEach(function(d) {
+                dateSet[d] = true;
+            });
+        }
+
+        // Sort dates
+        timeState.dates = Object.keys(dateSet).sort();
+
+        if (timeState.dates.length === 0) {
+            timeState.dates = [timeState.baselineDate];
+        }
+
+        timeState.minDate = timeState.dates[0];
+        timeState.maxDate = timeState.dates[timeState.dates.length - 1];
+        timeState.currentDate = timeState.maxDate;
+
+        // Configure slider
+        var slider = document.getElementById('time-slider');
+        slider.min = 0;
+        slider.max = timeState.dates.length - 1;
+        slider.value = timeState.dates.length - 1;
+
+        // Update labels
+        document.getElementById('time-min').textContent = formatDateShort(timeState.minDate);
+        document.getElementById('time-max').textContent = formatDateShort(timeState.maxDate);
+
+        // Update display
+        updateTimeDisplay();
+
+        // Event listeners
+        slider.addEventListener('input', handleTimeSliderChange);
+
+        document.getElementById('time-play').addEventListener('click', toggleTimePlay);
+        document.getElementById('time-reset').addEventListener('click', resetTimeSlider);
+    }
+
+    function handleTimeSliderChange() {
+        var slider = document.getElementById('time-slider');
+        var index = parseInt(slider.value, 10);
+        timeState.currentDate = timeState.dates[index];
+
+        updateTimeDisplay();
+        filterDataByDate();
+        updateUrlHash();
+    }
+
+    function updateTimeDisplay() {
+        var dateEl = document.getElementById('time-current-date');
+        var countEl = document.getElementById('time-lamp-count');
+
+        dateEl.textContent = formatDateLong(timeState.currentDate);
+
+        // Calculate lamp count up to this date
+        var count = countLampsUpToDate(timeState.currentDate);
+        countEl.textContent = formatNumber(count) + ' ' + I18n.t('lamps');
+    }
+
+    function countLampsUpToDate(date) {
+        var count = 0;
+
+        // All baseline lamps are included (they predate the baseline)
+        if (cachedData.baseline) {
+            count += cachedData.baseline.features.length;
+        }
+
+        // Count new lamps up to date
+        if (cachedData.newLamps) {
+            cachedData.newLamps.features.forEach(function(f) {
+                var d = f.properties.date_added || timeState.baselineDate;
+                if (d <= date) count++;
+            });
+        }
+
+        return count;
+    }
+
+    function filterDataByDate() {
+        var date = timeState.currentDate;
+
+        // Baseline is always fully included (all pre-date baseline)
+        // Just update new lamps based on date
+        var filteredNew = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+        if (cachedData.newLamps) {
+            filteredNew.features = cachedData.newLamps.features.filter(function(f) {
+                var d = f.properties.date_added || timeState.baselineDate;
+                return d <= date;
+            });
+        }
+
+        // Update sources
+        map.getSource('new-lamps').setData(filteredNew);
+
+        // Update heatmap (baseline + filtered new)
+        var allLamps = {
+            type: 'FeatureCollection',
+            features: cachedData.baseline.features.concat(filteredNew.features)
+        };
+        map.getSource('all-lamps').setData(allLamps);
+
+        // Update stats display for this date
+        updateFilteredStats(filteredNew.features.length);
+    }
+
+    function updateFilteredStats(newCount) {
+        var baselineCount = cachedData.baseline ? cachedData.baseline.features.length : 0;
+        var total = baselineCount + newCount;
+
+        document.getElementById('stat-total').textContent = formatNumber(total);
+        document.getElementById('stat-new').textContent = formatNumber(newCount);
+    }
+
+    function toggleTimePlay() {
+        var btn = document.getElementById('time-play');
+
+        if (timeState.isPlaying) {
+            stopTimePlay();
+        } else {
+            startTimePlay();
+        }
+
+        btn.classList.toggle('playing', timeState.isPlaying);
+        updatePlayButtonIcon();
+    }
+
+    function startTimePlay() {
+        var slider = document.getElementById('time-slider');
+
+        // If at end, start from beginning
+        if (parseInt(slider.value, 10) >= timeState.dates.length - 1) {
+            slider.value = 0;
+            handleTimeSliderChange();
+        }
+
+        timeState.isPlaying = true;
+
+        timeState.playInterval = setInterval(function() {
+            var current = parseInt(slider.value, 10);
+
+            if (current >= timeState.dates.length - 1) {
+                stopTimePlay();
+                return;
+            }
+
+            slider.value = current + 1;
+            handleTimeSliderChange();
+        }, 500); // Advance every 500ms
+    }
+
+    function stopTimePlay() {
+        timeState.isPlaying = false;
+
+        if (timeState.playInterval) {
+            clearInterval(timeState.playInterval);
+            timeState.playInterval = null;
+        }
+
+        document.getElementById('time-play').classList.remove('playing');
+        updatePlayButtonIcon();
+    }
+
+    function updatePlayButtonIcon() {
+        var btn = document.getElementById('time-play');
+        if (timeState.isPlaying) {
+            btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+        } else {
+            btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+        }
+    }
+
+    function resetTimeSlider() {
+        stopTimePlay();
+
+        var slider = document.getElementById('time-slider');
+        slider.value = timeState.dates.length - 1;
+        timeState.currentDate = timeState.maxDate;
+
+        updateTimeDisplay();
+
+        // Restore full data
+        map.getSource('new-lamps').setData(cachedData.newLamps);
+
+        var allLamps = {
+            type: 'FeatureCollection',
+            features: cachedData.baseline.features.concat(cachedData.newLamps.features)
+        };
+        map.getSource('all-lamps').setData(allLamps);
+
+        // Restore full stats
+        updateStatsUI();
+    }
+
+    function formatDateShort(dateStr) {
+        if (!dateStr) return '-';
+        var parts = dateStr.split('-');
+        var months = I18n.t('monthsShort').split(',');
+        var month = months[parseInt(parts[1], 10) - 1] || parts[1];
+        return month + ' ' + parseInt(parts[2], 10);
+    }
+
+    function formatDateLong(dateStr) {
+        if (!dateStr) return '-';
+        var parts = dateStr.split('-');
+        var months = I18n.t('monthsLong').split(',');
+        var month = months[parseInt(parts[1], 10) - 1] || parts[1];
+        return month + ' ' + parseInt(parts[2], 10) + ', ' + parts[0];
     }
 
     // ========================================
@@ -460,16 +714,29 @@
         var hash = window.location.hash;
         if (!hash) return;
 
-        // Format: #map=zoom/lat/lng
-        var match = hash.match(/#map=([0-9.]+)\/([0-9.-]+)\/([0-9.-]+)/);
+        // Format: #map=zoom/lat/lng or #map=zoom/lat/lng/date
+        var match = hash.match(/#map=([0-9.]+)\/([0-9.-]+)\/([0-9.-]+)(?:\/(\d{4}-\d{2}-\d{2}))?/);
         if (match) {
             var zoom = parseFloat(match[1]);
             var lat = parseFloat(match[2]);
             var lng = parseFloat(match[3]);
+            var date = match[4];
 
             if (!isNaN(zoom) && !isNaN(lat) && !isNaN(lng)) {
                 map.setCenter([lng, lat]);
                 map.setZoom(zoom);
+            }
+
+            // Apply date from URL if valid
+            if (date && timeState.dates && timeState.dates.length > 0) {
+                var dateIndex = timeState.dates.indexOf(date);
+                if (dateIndex >= 0) {
+                    var slider = document.getElementById('time-slider');
+                    slider.value = dateIndex;
+                    timeState.currentDate = date;
+                    updateTimeDisplay();
+                    filterDataByDate();
+                }
             }
         }
     }
@@ -478,6 +745,12 @@
         var center = map.getCenter();
         var zoom = map.getZoom().toFixed(1);
         var hash = '#map=' + zoom + '/' + center.lat.toFixed(5) + '/' + center.lng.toFixed(5);
+
+        // Add date to hash if not at max (today)
+        if (timeState.currentDate && timeState.currentDate !== timeState.maxDate) {
+            hash += '/' + timeState.currentDate;
+        }
+
         history.replaceState(null, null, hash);
     }
 
