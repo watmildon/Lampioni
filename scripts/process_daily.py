@@ -140,6 +140,31 @@ def postpass_query(sql):
         raise Exception(f"Postpass query failed: {e}")
 
 
+def write_known_ids(path, known_ids):
+    """Write known-ids.json with one ID per line for better git diffs."""
+    with open(path, 'w') as f:
+        f.write('{\n')
+        f.write('  "baseline_ids": [\n')
+        baseline = known_ids.get("baseline_ids", [])
+        for i, id_ in enumerate(baseline):
+            comma = "," if i < len(baseline) - 1 else ""
+            f.write(f'    {id_}{comma}\n')
+        f.write('  ],\n')
+        f.write('  "new_ids": {\n')
+        new_ids = known_ids.get("new_ids", {})
+        dates = list(new_ids.keys())
+        for di, date in enumerate(dates):
+            ids = new_ids[date]
+            date_comma = "," if di < len(dates) - 1 else ""
+            f.write(f'    "{date}": [\n')
+            for i, id_ in enumerate(ids):
+                comma = "," if i < len(ids) - 1 else ""
+                f.write(f'      {id_}{comma}\n')
+            f.write(f'    ]{date_comma}\n')
+        f.write('  }\n')
+        f.write('}\n')
+
+
 def fetch_new_streetlamps_overpass(since_date):
     """Fetch street lamps created since the given date using Overpass."""
     query = f"""
@@ -396,8 +421,7 @@ def main():
     # Save all updated files
     print("\nSaving updated files...")
 
-    with open(known_ids_path, 'w') as f:
-        json.dump(known_ids, f, separators=(',', ':'))
+    write_known_ids(known_ids_path, known_ids)
     print(f"  {known_ids_path.name}")
 
     write_geojson_lines(new_lamps_path, new_features)

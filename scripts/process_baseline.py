@@ -29,6 +29,31 @@ STREETLAMP_TAGS = [
 LIT_VALUES = ["yes", "24/7", "automatic", "limited", "interval", "sunset-sunrise"]
 
 
+def write_known_ids(path, known_ids):
+    """Write known-ids.json with one ID per line for better git diffs."""
+    with open(path, 'w') as f:
+        f.write('{\n')
+        f.write('  "baseline_ids": [\n')
+        baseline = known_ids.get("baseline_ids", [])
+        for i, id_ in enumerate(baseline):
+            comma = "," if i < len(baseline) - 1 else ""
+            f.write(f'    {id_}{comma}\n')
+        f.write('  ],\n')
+        f.write('  "new_ids": {\n')
+        new_ids = known_ids.get("new_ids", {})
+        dates = list(new_ids.keys())
+        for di, date in enumerate(dates):
+            ids = new_ids[date]
+            date_comma = "," if di < len(dates) - 1 else ""
+            f.write(f'    "{date}": [\n')
+            for i, id_ in enumerate(ids):
+                comma = "," if i < len(ids) - 1 else ""
+                f.write(f'      {id_}{comma}\n')
+            f.write(f'    ]{date_comma}\n')
+        f.write('  }\n')
+        f.write('}\n')
+
+
 def run_osmium(args, description):
     """Run an osmium command and handle errors."""
     cmd = ["osmium"] + args
@@ -206,8 +231,7 @@ def main():
         }
 
         known_ids_path = output_dir / "known-ids.json"
-        with open(known_ids_path, 'w') as f:
-            json.dump(known_ids, f, separators=(',', ':'))
+        write_known_ids(known_ids_path, known_ids)
         print(f"  Saved {len(known_ids['baseline_ids']):,} baseline IDs")
 
         # Step 6: Create initial stats.json
