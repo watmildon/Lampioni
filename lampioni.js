@@ -1,6 +1,6 @@
 /**
  * Lampioni - Italian Street Lights Map
- * https://github.com/your-repo/lampioni
+ * https://github.com/watmildon/Lampioni
  */
 
 (function() {

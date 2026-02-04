@@ -79,7 +79,7 @@ def overpass_query(query, timeout_sec=300, min_freshness_hours=None):
         try:
             req = Request(endpoint, data=data, headers={
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'User-Agent': 'Lampioni/1.0 (https://github.com/your-repo/lampioni)'
+                'User-Agent': 'Lampioni/1.0 (https://github.com/watmildon/Lampioni)'
             })
             print(f"  Trying {endpoint.split('/')[2]}...")
 
