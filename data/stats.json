@@ -1,35 +1,39 @@
 {
   "baseline_count": 103832,
-  "new_count": 12428,
-  "last_updated": "2026-02-05T06:54:14.624213+00:00",
+  "new_count": 16355,
+  "last_updated": "2026-02-06T06:48:54.059964+00:00",
   "leaderboard": [
     {
-      "user": "Martj9",
-      "count": 1613
-    },
-    {
       "user": "giopera",
-      "count": 1204
+      "count": 2383
     },
     {
-      "user": "Cascafico",
-      "count": 1192
+      "user": "Martj9",
+      "count": 1774
     },
     {
       "user": "Clown Pennywise",
-      "count": 1057
+      "count": 1352
     },
     {
-      "user": "Yiyi",
-      "count": 719
+      "user": "Cascafico",
+      "count": 1216
     },
     {
       "user": "OpenCode",
-      "count": 693
+      "count": 960
+    },
+    {
+      "user": "Yiyi",
+      "count": 887
     },
     {
       "user": "MarcoR",
-      "count": 636
+      "count": 829
+    },
+    {
+      "user": "Cybermanx",
+      "count": 385
     },
     {
       "user": "Paolitosss",
@@ -41,15 +45,27 @@
     },
     {
       "user": "jacopofar",
-      "count": 307
+      "count": 317
     },
     {
-      "user": "Cybermanx",
-      "count": 306
+      "user": "AboutVenia",
+      "count": 286
+    },
+    {
+      "user": "DnaX",
+      "count": 283
     },
     {
       "user": "AndreaDp271",
       "count": 271
+    },
+    {
+      "user": "nicola_yubo",
+      "count": 266
+    },
+    {
+      "user": "AlexTies",
+      "count": 257
     },
     {
       "user": "wildmaps",
@@ -57,37 +73,22 @@
     },
     {
       "user": "raccoss",
-      "count": 232
-    },
-    {
-      "user": "AboutVenia",
-      "count": 218
-    },
-    {
-      "user": "totera",
-      "count": 171
-    },
-    {
-      "user": "Lucapa",
-      "count": 161
+      "count": 235
     },
     {
       "user": "Max1234-ITA",
-      "count": 161
+      "count": 217
     },
     {
-      "user": "GiulyR98",
-      "count": 160
-    },
-    {
-      "user": "Sandro Boccia",
-      "count": 151
+      "user": "SekeRob",
+      "count": 211
     }
   ],
   "daily_additions": {
     "2026-02-03": 218,
     "2026-02-04": 12111,
-    "2026-02-05": 99
+    "2026-02-05": 3823,
+    "2026-02-06": 203
   },
   "data_source": "overpass"
 }
