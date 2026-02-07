@@ -1,47 +1,67 @@
 {
   "baseline_count": 103832,
-  "new_count": 16355,
-  "last_updated": "2026-02-06T06:48:54.059964+00:00",
+  "new_count": 21868,
+  "last_updated": "2026-02-07T06:37:45.273107+00:00",
   "leaderboard": [
     {
       "user": "giopera",
-      "count": 2383
+      "count": 3550
     },
     {
       "user": "Martj9",
-      "count": 1774
+      "count": 1990
     },
     {
       "user": "Clown Pennywise",
-      "count": 1352
+      "count": 1827
     },
     {
       "user": "Cascafico",
-      "count": 1216
+      "count": 1543
+    },
+    {
+      "user": "Yiyi",
+      "count": 1261
+    },
+    {
+      "user": "toponomastica_comune_arenzano",
+      "count": 1038
     },
     {
       "user": "OpenCode",
       "count": 960
     },
     {
-      "user": "Yiyi",
-      "count": 887
+      "user": "MarcoR",
+      "count": 939
     },
     {
-      "user": "MarcoR",
-      "count": 829
+      "user": "Caramell",
+      "count": 632
     },
     {
       "user": "Cybermanx",
-      "count": 385
+      "count": 578
+    },
+    {
+      "user": "AlexTies",
+      "count": 421
     },
     {
       "user": "Paolitosss",
-      "count": 361
+      "count": 409
+    },
+    {
+      "user": "sotismovedon",
+      "count": 388
     },
     {
       "user": "ggamba",
       "count": 350
+    },
+    {
+      "user": "nicola_yubo",
+      "count": 335
     },
     {
       "user": "jacopofar",
@@ -53,44 +73,25 @@
     },
     {
       "user": "DnaX",
-      "count": 283
+      "count": 285
     },
     {
       "user": "AndreaDp271",
       "count": 271
     },
     {
-      "user": "nicola_yubo",
-      "count": 266
-    },
-    {
-      "user": "AlexTies",
-      "count": 257
-    },
-    {
-      "user": "wildmaps",
-      "count": 236
-    },
-    {
-      "user": "raccoss",
-      "count": 235
-    },
-    {
-      "user": "Max1234-ITA",
-      "count": 217
-    },
-    {
       "user": "SekeRob",
-      "count": 211
+      "count": 264
     }
   ],
   "daily_additions": {
     "2026-02-01": 1672,
     "2026-02-02": 2237,
     "2026-02-03": 3346,
-    "2026-02-04": 5034,
-    "2026-02-05": 3862,
-    "2026-02-06": 204
+    "2026-02-04": 5033,
+    "2026-02-05": 3861,
+    "2026-02-06": 5693,
+    "2026-02-07": 26
   },
   "data_source": "overpass"
 }
