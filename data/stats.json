@@ -1,97 +1,98 @@
 {
   "baseline_count": 103832,
-  "new_count": 21868,
-  "last_updated": "2026-02-07T06:37:45.273107+00:00",
+  "new_count": 30873,
+  "last_updated": "2026-02-08T06:44:25.465198+00:00",
   "leaderboard": [
     {
       "user": "giopera",
-      "count": 3550
-    },
-    {
-      "user": "Martj9",
-      "count": 1990
-    },
-    {
-      "user": "Clown Pennywise",
-      "count": 1827
+      "count": 6904
     },
     {
       "user": "Cascafico",
-      "count": 1543
+      "count": 2760
+    },
+    {
+      "user": "Martj9",
+      "count": 2468
+    },
+    {
+      "user": "Clown Pennywise",
+      "count": 2290
+    },
+    {
+      "user": "toponomastica_comune_arenzano",
+      "count": 1402
     },
     {
       "user": "Yiyi",
       "count": 1261
     },
     {
-      "user": "toponomastica_comune_arenzano",
-      "count": 1038
+      "user": "MarcoR",
+      "count": 1158
     },
     {
       "user": "OpenCode",
-      "count": 960
-    },
-    {
-      "user": "MarcoR",
-      "count": 939
+      "count": 1077
     },
     {
       "user": "Caramell",
-      "count": 632
-    },
-    {
-      "user": "Cybermanx",
-      "count": 578
+      "count": 893
     },
     {
       "user": "AlexTies",
-      "count": 421
+      "count": 807
+    },
+    {
+      "user": "Cybermanx",
+      "count": 737
+    },
+    {
+      "user": "DnaX",
+      "count": 513
+    },
+    {
+      "user": "nicola_yubo",
+      "count": 442
+    },
+    {
+      "user": "alessandrocarmeli",
+      "count": 431
     },
     {
       "user": "Paolitosss",
-      "count": 409
+      "count": 414
     },
     {
       "user": "sotismovedon",
       "count": 388
     },
     {
-      "user": "ggamba",
-      "count": 350
-    },
-    {
-      "user": "nicola_yubo",
-      "count": 335
-    },
-    {
       "user": "jacopofar",
-      "count": 317
+      "count": 378
     },
     {
-      "user": "AboutVenia",
-      "count": 286
+      "user": "ggamba",
+      "count": 354
     },
     {
-      "user": "DnaX",
-      "count": 285
+      "user": "AlessioMela",
+      "count": 314
     },
     {
-      "user": "AndreaDp271",
-      "count": 271
-    },
-    {
-      "user": "SekeRob",
-      "count": 264
+      "user": "Martin Ligabue",
+      "count": 305
     }
   ],
   "daily_additions": {
     "2026-02-01": 1672,
     "2026-02-02": 2237,
-    "2026-02-03": 3346,
+    "2026-02-03": 3343,
     "2026-02-04": 5033,
     "2026-02-05": 3861,
     "2026-02-06": 5693,
-    "2026-02-07": 26
+    "2026-02-07": 8523,
+    "2026-02-08": 511
   },
   "data_source": "overpass"
 }
