@@ -1,7 +1,7 @@
 {
   "baseline_count": 103832,
-  "new_count": 44494,
-  "last_updated": "2026-02-09T07:01:01.821636+00:00",
+  "new_count": 47171,
+  "last_updated": "2026-02-10T07:00:38.233467+00:00",
   "leaderboard": [
     {
       "user": "giopera",
@@ -9,7 +9,7 @@
     },
     {
       "user": "Cascafico",
-      "count": 3087
+      "count": 3517
     },
     {
       "user": "Martj9",
@@ -24,76 +24,77 @@
       "count": 2112
     },
     {
+      "user": "Yiyi",
+      "count": 1499
+    },
+    {
+      "user": "MarcoR",
+      "count": 1449
+    },
+    {
       "user": "alessandrocarmeli",
       "count": 1330
     },
     {
-      "user": "Yiyi",
-      "count": 1330
-    },
-    {
-      "user": "MarcoR",
-      "count": 1236
+      "user": "mircozorzo",
+      "count": 1232
     },
     {
       "user": "AlexTies",
-      "count": 1157
-    },
-    {
-      "user": "mircozorzo",
-      "count": 1132
+      "count": 1202
     },
     {
       "user": "OpenCode",
-      "count": 1077
+      "count": 1148
+    },
+    {
+      "user": "Cybermanx",
+      "count": 1006
     },
     {
       "user": "Caramell",
       "count": 893
     },
     {
-      "user": "Cybermanx",
-      "count": 875
+      "user": "DnaX",
+      "count": 607
     },
     {
-      "user": "DnaX",
-      "count": 513
+      "user": "AlessioMela",
+      "count": 563
+    },
+    {
+      "user": "nicola_yubo",
+      "count": 493
     },
     {
       "user": "sotismovedon",
       "count": 484
     },
     {
-      "user": "nicola_yubo",
+      "user": "antropopoiesi",
       "count": 474
     },
     {
       "user": "Max1234-ITA",
-      "count": 438
+      "count": 470
     },
     {
       "user": "jacopofar",
-      "count": 433
-    },
-    {
-      "user": "Paolitosss",
-      "count": 431
-    },
-    {
-      "user": "AlessioMela",
-      "count": 390
+      "count": 449
     }
   ],
   "daily_additions": {
     "2026-02-01": 1672,
-    "2026-02-02": 2237,
-    "2026-02-03": 3335,
+    "2026-02-02": 2236,
+    "2026-02-03": 3333,
     "2026-02-04": 5033,
     "2026-02-05": 3859,
     "2026-02-06": 5693,
     "2026-02-07": 8523,
-    "2026-02-08": 14070,
-    "2026-02-09": 72
+    "2026-02-08": 14069,
+    "2026-02-09": 2240,
+    "2026-02-10": 513
   },
   "data_source": "overpass"
 }
