@@ -1,7 +1,7 @@
 {
   "baseline_count": 103832,
-  "new_count": 52754,
-  "last_updated": "2026-02-12T06:58:00.767677+00:00",
+  "new_count": 54737,
+  "last_updated": "2026-02-13T06:56:21.903003+00:00",
   "leaderboard": [
     {
       "user": "giopera",
@@ -9,15 +9,15 @@
     },
     {
       "user": "Cascafico",
-      "count": 5531
+      "count": 5625
     },
     {
       "user": "Martj9",
-      "count": 2830
+      "count": 3055
     },
     {
       "user": "Clown Pennywise",
-      "count": 2160
+      "count": 2284
     },
     {
       "user": "toponomastica_comune_arenzano",
@@ -25,27 +25,27 @@
     },
     {
       "user": "Yiyi",
-      "count": 1821
-    },
-    {
-      "user": "MarcoR",
-      "count": 1617
+      "count": 2042
     },
     {
       "user": "Cybermanx",
-      "count": 1424
+      "count": 1761
+    },
+    {
+      "user": "MarcoR",
+      "count": 1704
     },
     {
       "user": "alessandrocarmeli",
-      "count": 1414
+      "count": 1620
     },
     {
       "user": "mircozorzo",
-      "count": 1354
+      "count": 1367
     },
     {
       "user": "AlexTies",
-      "count": 1202
+      "count": 1204
     },
     {
       "user": "OpenCode",
@@ -53,19 +53,19 @@
     },
     {
       "user": "AlessioMela",
-      "count": 975
+      "count": 1028
     },
     {
       "user": "Caramell",
       "count": 893
     },
     {
-      "user": "DnaX",
-      "count": 639
+      "user": "nicola_yubo",
+      "count": 746
     },
     {
-      "user": "nicola_yubo",
-      "count": 593
+      "user": "DnaX",
+      "count": 669
     },
     {
       "user": "Paolitosss",
@@ -73,7 +73,7 @@
     },
     {
       "user": "Martin Ligabue",
-      "count": 529
+      "count": 531
     },
     {
       "user": "jacopofar",
@@ -81,7 +81,7 @@
     },
     {
       "user": "Max1234-ITA",
-      "count": 492
+      "count": 516
     }
   ],
   "daily_additions": {
@@ -96,7 +96,8 @@
     "2026-02-09": 2240,
     "2026-02-10": 2361,
     "2026-02-11": 3561,
-    "2026-02-12": 175
+    "2026-02-12": 1872,
+    "2026-02-13": 286
   },
   "data_source": "overpass"
 }
