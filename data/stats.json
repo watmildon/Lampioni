@@ -1,7 +1,7 @@
 {
   "baseline_count": 103832,
-  "new_count": 54737,
-  "last_updated": "2026-02-13T06:56:21.903003+00:00",
+  "new_count": 56235,
+  "last_updated": "2026-02-14T06:40:10.783201+00:00",
   "leaderboard": [
     {
       "user": "giopera",
@@ -13,7 +13,7 @@
     },
     {
       "user": "Martj9",
-      "count": 3055
+      "count": 3556
     },
     {
       "user": "Clown Pennywise",
@@ -24,16 +24,16 @@
       "count": 2140
     },
     {
+      "user": "Cybermanx",
+      "count": 2074
+    },
+    {
       "user": "Yiyi",
       "count": 2042
     },
     {
-      "user": "Cybermanx",
-      "count": 1761
-    },
-    {
       "user": "MarcoR",
-      "count": 1704
+      "count": 2008
     },
     {
       "user": "alessandrocarmeli",
@@ -41,7 +41,7 @@
     },
     {
       "user": "mircozorzo",
-      "count": 1367
+      "count": 1370
     },
     {
       "user": "AlexTies",
@@ -61,27 +61,27 @@
     },
     {
       "user": "nicola_yubo",
-      "count": 746
+      "count": 809
     },
     {
       "user": "DnaX",
-      "count": 669
+      "count": 671
+    },
+    {
+      "user": "jacopofar",
+      "count": 624
+    },
+    {
+      "user": "Martin Ligabue",
+      "count": 557
     },
     {
       "user": "Paolitosss",
       "count": 554
     },
     {
-      "user": "Martin Ligabue",
-      "count": 531
-    },
-    {
-      "user": "jacopofar",
-      "count": 520
-    },
-    {
-      "user": "Max1234-ITA",
-      "count": 516
+      "user": "sotismovedon",
+      "count": 552
     }
   ],
   "daily_additions": {
@@ -97,7 +97,8 @@
     "2026-02-10": 2361,
     "2026-02-11": 3561,
     "2026-02-12": 1872,
-    "2026-02-13": 286
+    "2026-02-13": 1636,
+    "2026-02-14": 148
   },
   "data_source": "overpass"
 }
