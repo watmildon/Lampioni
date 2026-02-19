@@ -1,35 +1,35 @@
 {
   "baseline_count": 103832,
-  "new_count": 72380,
-  "last_updated": "2026-02-18T06:58:18.847950+00:00",
+  "new_count": 75300,
+  "last_updated": "2026-02-19T06:56:52.861779+00:00",
   "leaderboard": [
     {
       "user": "giopera",
-      "count": 21971
+      "count": 23227
     },
     {
       "user": "Cascafico",
-      "count": 6689
+      "count": 6688
     },
     {
       "user": "Martj9",
-      "count": 4060
-    },
-    {
-      "user": "Cybermanx",
-      "count": 3098
+      "count": 4082
     },
     {
       "user": "Clown Pennywise",
-      "count": 3067
+      "count": 3649
+    },
+    {
+      "user": "Cybermanx",
+      "count": 3156
     },
     {
       "user": "toponomastica_comune_arenzano",
-      "count": 2375
+      "count": 2554
     },
     {
       "user": "MarcoR",
-      "count": 2351
+      "count": 2403
     },
     {
       "user": "Yiyi",
@@ -37,11 +37,11 @@
     },
     {
       "user": "alessandrocarmeli",
-      "count": 1775
+      "count": 1880
     },
     {
       "user": "AlexTies",
-      "count": 1509
+      "count": 1581
     },
     {
       "user": "mircozorzo",
@@ -53,7 +53,7 @@
     },
     {
       "user": "DnaX",
-      "count": 1242
+      "count": 1243
     },
     {
       "user": "OpenCode",
@@ -61,11 +61,11 @@
     },
     {
       "user": "nicola_yubo",
-      "count": 1041
+      "count": 1069
     },
     {
       "user": "Caramell",
-      "count": 931
+      "count": 956
     },
     {
       "user": "jacopofar",
@@ -77,11 +77,11 @@
     },
     {
       "user": "alesarrett",
-      "count": 702
+      "count": 732
     },
     {
-      "user": "Paolitosss",
-      "count": 673
+      "user": "Max1234-ITA",
+      "count": 686
     }
   ],
   "daily_additions": {
@@ -101,8 +101,9 @@
     "2026-02-14": 2324,
     "2026-02-15": 5464,
     "2026-02-16": 5117,
-    "2026-02-17": 3360,
-    "2026-02-18": 30
+    "2026-02-17": 3359,
+    "2026-02-18": 2921,
+    "2026-02-19": 30
   },
   "data_source": "overpass"
 }
