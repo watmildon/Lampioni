@@ -1,8 +1,12 @@
 {
   "baseline_count": 103832,
-  "new_count": 79662,
-  "last_updated": "2026-02-20T06:52:24.179847+00:00",
+  "new_count": 185930,
+  "last_updated": "2026-02-21T06:38:57.788242+00:00",
   "leaderboard": [
+    {
+      "user": "unknown",
+      "count": 106268
+    },
     {
       "user": "giopera",
       "count": 24695
@@ -78,10 +82,6 @@
     {
       "user": "alesarrett",
       "count": 800
-    },
-    {
-      "user": "Max1234-ITA",
-      "count": 722
     }
   ],
   "daily_additions": {
@@ -104,7 +104,8 @@
     "2026-02-17": 3358,
     "2026-02-18": 2921,
     "2026-02-19": 4319,
-    "2026-02-20": 77
+    "2026-02-20": 77,
+    "2026-02-21": 106268
   },
-  "data_source": "overpass"
+  "data_source": "postpass"
 }
