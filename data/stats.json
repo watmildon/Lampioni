@@ -1,47 +1,43 @@
 {
   "baseline_count": 103832,
-  "new_count": 185930,
-  "last_updated": "2026-02-21T06:38:57.788242+00:00",
+  "new_count": 88293,
+  "last_updated": "2026-02-21T18:36:33.433454+00:00",
   "leaderboard": [
     {
-      "user": "unknown",
-      "count": 106268
-    },
-    {
       "user": "giopera",
-      "count": 24695
+      "count": 28545
     },
     {
       "user": "Cascafico",
-      "count": 8463
-    },
-    {
-      "user": "Martj9",
-      "count": 4082
+      "count": 11391
     },
     {
       "user": "Clown Pennywise",
-      "count": 4018
+      "count": 4206
+    },
+    {
+      "user": "Martj9",
+      "count": 4086
     },
     {
       "user": "Cybermanx",
       "count": 3156
     },
     {
-      "user": "toponomastica_comune_arenzano",
-      "count": 2615
+      "user": "alessandrocarmeli",
+      "count": 2712
     },
     {
       "user": "MarcoR",
-      "count": 2600
+      "count": 2634
+    },
+    {
+      "user": "toponomastica_comune_arenzano",
+      "count": 2625
     },
     {
       "user": "Yiyi",
       "count": 2042
-    },
-    {
-      "user": "alessandrocarmeli",
-      "count": 1878
     },
     {
       "user": "AlexTies",
@@ -49,39 +45,43 @@
     },
     {
       "user": "mircozorzo",
-      "count": 1511
+      "count": 1525
     },
     {
       "user": "AlessioMela",
-      "count": 1361
+      "count": 1352
     },
     {
       "user": "DnaX",
-      "count": 1244
+      "count": 1251
+    },
+    {
+      "user": "nicola_yubo",
+      "count": 1225
     },
     {
       "user": "OpenCode",
       "count": 1148
     },
     {
-      "user": "nicola_yubo",
-      "count": 1069
+      "user": "jacopofar",
+      "count": 973
     },
     {
       "user": "Caramell",
       "count": 956
     },
     {
-      "user": "jacopofar",
-      "count": 926
+      "user": "Max1234-ITA",
+      "count": 869
+    },
+    {
+      "user": "alesarrett",
+      "count": 835
     },
     {
       "user": "sotismovedon",
       "count": 802
-    },
-    {
-      "user": "alesarrett",
-      "count": 800
     }
   ],
   "daily_additions": {
@@ -104,8 +104,7 @@
     "2026-02-17": 3358,
     "2026-02-18": 2921,
     "2026-02-19": 4319,
-    "2026-02-20": 77,
-    "2026-02-21": 106268
-  },
-  "data_source": "postpass"
+    "2026-02-20": 4713,
+    "2026-02-21": 3995
+  }
 }
