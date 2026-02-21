@@ -1,7 +1,7 @@
 {
   "baseline_count": 103832,
-  "new_count": 88293,
-  "last_updated": "2026-02-21T18:36:33.433454+00:00",
+  "new_count": 88378,
+  "last_updated": "2026-02-21T19:45:11.264691+00:00",
   "leaderboard": [
     {
       "user": "giopera",
@@ -45,7 +45,7 @@
     },
     {
       "user": "mircozorzo",
-      "count": 1525
+      "count": 1554
     },
     {
       "user": "AlessioMela",
@@ -57,7 +57,7 @@
     },
     {
       "user": "nicola_yubo",
-      "count": 1225
+      "count": 1246
     },
     {
       "user": "OpenCode",
@@ -105,6 +105,6 @@
     "2026-02-18": 2921,
     "2026-02-19": 4319,
     "2026-02-20": 4713,
-    "2026-02-21": 3995
+    "2026-02-21": 4080
   }
 }

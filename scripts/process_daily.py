@@ -11,7 +11,7 @@ import argparse
 import json
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
@@ -121,16 +121,16 @@ def write_known_ids(path, known_ids):
     with open(path, 'w') as f:
         f.write('{\n')
         f.write('  "baseline_ids": [\n')
-        baseline = known_ids.get("baseline_ids", [])
+        baseline = sorted(known_ids.get("baseline_ids", []))
         for i, id_ in enumerate(baseline):
             comma = "," if i < len(baseline) - 1 else ""
             f.write(f'    {id_}{comma}\n')
         f.write('  ],\n')
         f.write('  "new_ids": {\n')
         new_ids = known_ids.get("new_ids", {})
-        dates = list(new_ids.keys())
+        dates = sorted(new_ids.keys())
         for di, date in enumerate(dates):
-            ids = new_ids[date]
+            ids = sorted(new_ids[date])
             date_comma = "," if di < len(dates) - 1 else ""
             f.write(f'    "{date}": [\n')
             for i, id_ in enumerate(ids):
@@ -139,6 +139,16 @@ def write_known_ids(path, known_ids):
             f.write(f'    ]{date_comma}\n')
         f.write('  }\n')
         f.write('}\n')
+
+
+def get_latest_timestamp(features):
+    """Find the most recent OSM timestamp across all features."""
+    latest = None
+    for f in features:
+        ts = f.get("properties", {}).get("timestamp", "")
+        if ts and (latest is None or ts > latest):
+            latest = ts
+    return latest
 
 
 def fetch_new_streetlamps_overpass(since_date):
@@ -208,7 +218,7 @@ def write_geojson_lines(output_path, features):
     with open(output_path, 'w') as f:
         f.write('{"type":"FeatureCollection","features":[\n')
         for i, feat in enumerate(features):
-            line = json.dumps(feat, separators=(',', ':'))
+            line = json.dumps(feat, separators=(',', ':'), sort_keys=True)
             if i < len(features) - 1:
                 f.write(line + ',\n')
             else:
@@ -260,35 +270,64 @@ def main():
     print(f"Existing new lamps: {len(existing_by_id):,}")
     print()
 
-    # Fetch new street lamps from Overpass
-    new_lamps_data = fetch_new_streetlamps_overpass(BASELINE_DATE)
-    print(f"  Found {len(new_lamps_data):,} lamps created since {BASELINE_DATE}")
+    # Determine query date range
+    if args.full_refresh:
+        since_date = BASELINE_DATE
+        print(f"Full refresh: fetching all lamps since {BASELINE_DATE}")
+    else:
+        latest_ts = get_latest_timestamp(existing_new.get("features", []))
+        if latest_ts:
+            latest_dt = datetime.fromisoformat(latest_ts.replace('Z', '+00:00'))
+            since_dt = latest_dt - timedelta(days=1)
+            since_date = since_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+            print(f"Incremental: fetching lamps newer than {since_date} (latest seen: {latest_ts})")
+        else:
+            since_date = BASELINE_DATE
+            print(f"No existing timestamps found, falling back to full refresh from {BASELINE_DATE}")
+
+    # Fetch street lamps from Overpass
+    new_lamps_data = fetch_new_streetlamps_overpass(since_date)
+    print(f"  Fetched {len(new_lamps_data):,} lamps from Overpass")
 
     # Filter out baseline lamps (they existed before Feb 1)
     truly_new = {k: v for k, v in new_lamps_data.items() if k not in baseline_ids}
     print(f"  After filtering baseline: {len(truly_new):,} new lamps")
 
     # Build new features list
-    new_features = []
     new_today_count = 0
 
-    for osm_id, feature in truly_new.items():
-        # Check if we already knew about this lamp
-        if osm_id in existing_by_id:
-            # Preserve the original date_added and user from previous data
-            existing = existing_by_id[osm_id]
-            feature["properties"]["date_added"] = existing["properties"].get("date_added", today)
-        else:
-            # First time seeing this lamp
-            # Try to extract date from timestamp, otherwise use today
-            ts = feature["properties"].get("timestamp", "")
-            if ts:
-                feature["properties"]["date_added"] = ts[:10]  # YYYY-MM-DD
+    if args.full_refresh:
+        # Full refresh: rebuild entirely from Overpass response
+        new_features = []
+        for osm_id, feature in truly_new.items():
+            if osm_id in existing_by_id:
+                existing = existing_by_id[osm_id]
+                feature["properties"]["date_added"] = existing["properties"].get("date_added", today)
             else:
-                feature["properties"]["date_added"] = today
-            new_today_count += 1
+                ts = feature["properties"].get("timestamp", "")
+                if ts:
+                    feature["properties"]["date_added"] = ts[:10]
+                else:
+                    feature["properties"]["date_added"] = today
+                new_today_count += 1
+            new_features.append(feature)
+    else:
+        # Incremental: merge fetched lamps into existing data
+        for osm_id, feature in truly_new.items():
+            if osm_id in existing_by_id:
+                date_added = existing_by_id[osm_id]["properties"].get("date_added", today)
+                feature["properties"]["date_added"] = date_added
+            else:
+                ts = feature["properties"].get("timestamp", "")
+                if ts:
+                    feature["properties"]["date_added"] = ts[:10]
+                else:
+                    feature["properties"]["date_added"] = today
+                new_today_count += 1
+            existing_by_id[osm_id] = feature
 
-        new_features.append(feature)
+        new_features = [f for f in existing_by_id.values()
+                        if f["properties"]["osm_id"] not in baseline_ids]
 
     # Sort by date_added (newest first), then by ID
     new_features.sort(key=lambda f: (f["properties"].get("date_added", "0000-00-00"), -f["properties"]["osm_id"]), reverse=True)
@@ -316,9 +355,9 @@ def main():
         daily[date] = daily.get(date, 0) + 1
     stats["daily_additions"] = dict(sorted(daily.items()))
 
-    # Update known_ids with newly discovered IDs
-    all_new_ids = list(truly_new.keys())
-    known_ids["new_ids"] = {today: all_new_ids}  # Simplified: just track current new IDs
+    # Update known_ids with all current new IDs
+    all_new_ids = [f["properties"]["osm_id"] for f in new_features]
+    known_ids["new_ids"] = {today: all_new_ids}
 
     # Save all updated files
     print("\nSaving updated files...")
@@ -330,7 +369,7 @@ def main():
     print(f"  {new_lamps_path.name} ({len(new_features):,} features)")
 
     with open(stats_path, 'w') as f:
-        json.dump(stats, f, indent=2)
+        json.dump(stats, f, indent=2, sort_keys=True)
     print(f"  {stats_path.name}")
 
     # Write last-updated timestamp
@@ -339,6 +378,8 @@ def main():
 
     print("\n" + "="*50)
     print("Daily update complete!")
+    print(f"  Mode:            {'full refresh' if args.full_refresh else 'incremental'}")
+    print(f"  Fetched from API: {len(truly_new):,}")
     print(f"  Baseline:        {stats['baseline_count']:,}")
     print(f"  New since Feb 1: {stats['new_count']:,}")
     print(f"  Discovered today: {new_today_count:,}")
