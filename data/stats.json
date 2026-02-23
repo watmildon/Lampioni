@@ -22,12 +22,13 @@
     "2026-02-19": 4319,
     "2026-02-20": 4713,
     "2026-02-21": 4283,
-    "2026-02-22": 126
+    "2026-02-22": 4549,
+    "2026-02-23": 607
   },
-  "last_updated": "2026-02-22T06:43:02.578037+00:00",
+  "last_updated": "2026-02-23T07:00:24.215486+00:00",
   "leaderboard": [
     {
-      "count": 28545,
+      "count": 31264,
       "user": "giopera"
     },
     {
@@ -35,7 +36,7 @@
       "user": "Cascafico"
     },
     {
-      "count": 4206,
+      "count": 4230,
       "user": "Clown Pennywise"
     },
     {
@@ -43,39 +44,39 @@
       "user": "Martj9"
     },
     {
-      "count": 3156,
+      "count": 3584,
       "user": "Cybermanx"
     },
     {
-      "count": 2852,
+      "count": 3353,
       "user": "alessandrocarmeli"
     },
     {
-      "count": 2661,
-      "user": "MarcoR"
+      "count": 2942,
+      "user": "toponomastica_comune_arenzano"
     },
     {
-      "count": 2625,
-      "user": "toponomastica_comune_arenzano"
+      "count": 2662,
+      "user": "MarcoR"
     },
     {
       "count": 2042,
       "user": "Yiyi"
     },
     {
+      "count": 1703,
+      "user": "mircozorzo"
+    },
+    {
       "count": 1629,
       "user": "AlexTies"
     },
     {
-      "count": 1565,
-      "user": "mircozorzo"
-    },
-    {
-      "count": 1352,
+      "count": 1554,
       "user": "AlessioMela"
     },
     {
-      "count": 1272,
+      "count": 1298,
       "user": "nicola_yubo"
     },
     {
@@ -87,25 +88,25 @@
       "user": "OpenCode"
     },
     {
-      "count": 973,
+      "count": 977,
       "user": "jacopofar"
+    },
+    {
+      "count": 967,
+      "user": "alesarrett"
     },
     {
       "count": 956,
       "user": "Caramell"
     },
     {
-      "count": 869,
-      "user": "Max1234-ITA"
-    },
-    {
-      "count": 835,
-      "user": "alesarrett"
-    },
-    {
-      "count": 802,
+      "count": 930,
       "user": "sotismovedon"
+    },
+    {
+      "count": 920,
+      "user": "Max1234-ITA"
     }
   ],
-  "new_count": 88707
+  "new_count": 93737
 }
