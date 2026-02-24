@@ -23,20 +23,21 @@
     "2026-02-20": 4713,
     "2026-02-21": 4283,
     "2026-02-22": 4549,
-    "2026-02-23": 607
+    "2026-02-23": 2968,
+    "2026-02-24": 96
   },
-  "last_updated": "2026-02-23T07:00:24.215486+00:00",
+  "last_updated": "2026-02-24T06:56:04.091664+00:00",
   "leaderboard": [
     {
       "count": 31264,
       "user": "giopera"
     },
     {
-      "count": 11391,
+      "count": 12037,
       "user": "Cascafico"
     },
     {
-      "count": 4230,
+      "count": 4349,
       "user": "Clown Pennywise"
     },
     {
@@ -60,12 +61,16 @@
       "user": "MarcoR"
     },
     {
-      "count": 2042,
+      "count": 2302,
+      "user": "mircozorzo"
+    },
+    {
+      "count": 2040,
       "user": "Yiyi"
     },
     {
-      "count": 1703,
-      "user": "mircozorzo"
+      "count": 1823,
+      "user": "DnaX"
     },
     {
       "count": 1629,
@@ -76,24 +81,20 @@
       "user": "AlessioMela"
     },
     {
-      "count": 1298,
+      "count": 1378,
       "user": "nicola_yubo"
-    },
-    {
-      "count": 1251,
-      "user": "DnaX"
     },
     {
       "count": 1148,
       "user": "OpenCode"
     },
     {
-      "count": 977,
-      "user": "jacopofar"
+      "count": 1015,
+      "user": "alesarrett"
     },
     {
-      "count": 967,
-      "user": "alesarrett"
+      "count": 1009,
+      "user": "jacopofar"
     },
     {
       "count": 956,
@@ -104,9 +105,9 @@
       "user": "sotismovedon"
     },
     {
-      "count": 920,
+      "count": 926,
       "user": "Max1234-ITA"
     }
   ],
-  "new_count": 93737
+  "new_count": 96194
 }
