@@ -1,9 +1,10 @@
 name: Nightly Data Update
 
+# Project completed March 2026 - workflow disabled but kept as reference
 on:
-  schedule:
-    # Run at 06:00 UTC daily (after Geofabrik updates ~03:00 UTC)
-    - cron: '0 6 * * *'
+  # schedule:
+  #   # Run at 06:00 UTC daily (after Geofabrik updates ~03:00 UTC)
+  #   - cron: '0 6 * * *'
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
